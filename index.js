@@ -1,6 +1,6 @@
 class Node {
-  constructor(value) {
-    this.value = value;
+  constructor(data) {
+    this.data = data;
     this.left = null;
     this.right = null;
   }
@@ -29,7 +29,19 @@ class Tree {
     return build(sortedArray);
   }
 
-  include(value) {}
+  includes(value) {
+    let current = this.root;
+
+    while (current !== null) {
+      if (value === current.data) {
+        return true;
+      }
+
+      current = value < current.data ? current.left : current.right;
+    }
+
+    return false;
+  }
   insert(value) {}
   deleteItem(value) {}
   height(value) {}
@@ -41,21 +53,14 @@ class Tree {
       return;
     }
 
-    prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
+    this.prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
     console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
-    prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
+    this.prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
   };
 }
 
-const prettyPrint = (node, prefix = "", isLeft = true) => {
-  if (node === null || node === undefined) {
-    return;
-  }
-
-  prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
-  console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
-  prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
-};
-
 const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
-console.log(tree.root);
+tree.prettyPrint(tree.root);
+
+console.log(tree.includes(9));
+console.log(tree.includes(10));
