@@ -29,6 +29,7 @@ class Tree {
     return build(sortedArray);
   }
 
+  //Check if the value is in the tree
   includes(value) {
     let current = this.root;
 
@@ -42,6 +43,8 @@ class Tree {
 
     return false;
   }
+
+  //Add a value to the tree
   insert(value) {
     const temp = new Node(value);
 
@@ -69,7 +72,38 @@ class Tree {
       }
     }
   }
-  deleteItem(value) {}
+
+  //Remove a value from the tree
+  deleteItem(value) {
+    const remove = (node, target) => {
+      if (node === null) {
+        return null;
+      }
+
+      if (target < node.data) {
+        node.left = remove(node.left, target);
+      } else if (target > node.data) {
+        node.right = remove(node.right, target);
+      } else if (node.left === null) {
+        return node.right;
+      } else if (node.right === null) {
+        return node.left;
+      } else {
+        let successor = node.right;
+        while (successor.left !== null) {
+          successor = successor.left;
+        }
+        node.data = successor.data;
+        node.right = remove(node.right, successor.data);
+      }
+
+      return node;
+    };
+
+    this.root = remove(this.root, value);
+  }
+
+  //Get the height of the tree
   height(value) {}
   depth(value) {}
   isBalanced() {}
@@ -90,5 +124,5 @@ tree.prettyPrint(tree.root);
 
 console.log(tree.includes(9));
 
-tree.insert(100);
+tree.deleteItem(4);
 tree.prettyPrint(tree.root);
