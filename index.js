@@ -42,7 +42,33 @@ class Tree {
 
     return false;
   }
-  insert(value) {}
+  insert(value) {
+    const temp = new Node(value);
+
+    // If the tree is empty, set the root to the new node
+    if (this.root === null) {
+      this.root = temp;
+    }
+
+    //Find the node where it going to
+    let current = this.root;
+
+    while (current !== null) {
+      if (value < current.data) {
+        if (current.left === null) {
+          current.left = temp;
+          break;
+        }
+        current = current.left;
+      } else {
+        if (current.right === null) {
+          current.right = temp;
+          break;
+        }
+        current = current.right;
+      }
+    }
+  }
   deleteItem(value) {}
   height(value) {}
   depth(value) {}
@@ -63,4 +89,6 @@ const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 tree.prettyPrint(tree.root);
 
 console.log(tree.includes(9));
-console.log(tree.includes(10));
+
+tree.insert(100);
+tree.prettyPrint(tree.root);
