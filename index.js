@@ -104,9 +104,57 @@ class Tree {
   }
 
   //Get the height of the tree
-  height(value) {}
-  depth(value) {}
-  isBalanced() {}
+  height(value) {
+    let current = this.root;
+    let height = 0;
+    while (current !== null) {
+      if (value < current.data) {
+        current = current.left;
+      } else {
+        current = current.right;
+      }
+      height++;
+    }
+    return height;
+  }
+
+  //Get the depth of the value in the tree
+  depth(value) {
+    let current = this.root;
+    let depth = 0;
+    while (current !== null) {
+      if (value < current.data) {
+        current = current.left;
+      } else {
+        current = current.right;
+      }
+      depth++;
+    }
+    return depth;
+  }
+
+  //Check if the tree is balanced
+  isBalanced() {
+    const getHeight = (node) => {
+      if (node === null) {
+        return 0;
+      }
+
+      const leftHeight = getHeight(node.left);
+      if (leftHeight === -1) {
+        return -1;
+      }
+
+      const rightHeight = getHeight(node.right);
+      if (rightHeight === -1 || Math.abs(leftHeight - rightHeight) > 1) {
+        return -1;
+      }
+
+      return Math.max(leftHeight, rightHeight) + 1;
+    };
+
+    return getHeight(this.root) !== -1;
+  }
   rebalance() {}
   prettyPrint = (node, prefix = "", isLeft = true) => {
     if (node === null || node === undefined) {
@@ -123,6 +171,7 @@ const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 tree.prettyPrint(tree.root);
 
 console.log(tree.includes(9));
-
-tree.deleteItem(4);
-tree.prettyPrint(tree.root);
+tree.insert(10);
+console.log(tree.height(3));
+console.log(tree.depth(3));
+console.log(tree.isBalanced());
