@@ -103,6 +103,22 @@ class Tree {
     this.root = remove(this.root, value);
   }
 
+  //Traverse the tree in level order
+  levelOrderForEach(callback) {
+    if (!callback) throw new Error("callback is required");
+    const queue = [this.root];
+    while (queue.length > 0) {
+      const node = queue.shift();
+      callback(node);
+      if (node.left !== null) {
+        queue.push(node.left);
+      }
+      if (node.right !== null) {
+        queue.push(node.right);
+      }
+    }
+  }
+
   //Get the height of the tree
   height(value) {
     let current = this.root;
@@ -155,7 +171,20 @@ class Tree {
 
     return getHeight(this.root) !== -1;
   }
-  rebalance() {}
+
+  //Rebalance the tree
+  rebalance() {
+    const sortedArray = [];
+    const inOrder = (node) => {
+      if (node !== null) {
+        inOrder(node.left);
+        sortedArray.push(node.data);
+        inOrder(node.right);
+      }
+    };
+    inOrder(this.root);
+    this.root = Tree.#buildTree(sortedArray);
+  }
   prettyPrint = (node, prefix = "", isLeft = true) => {
     if (node === null || node === undefined) {
       return;
@@ -170,8 +199,4 @@ class Tree {
 const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 tree.prettyPrint(tree.root);
 
-console.log(tree.includes(9));
-tree.insert(10);
-console.log(tree.height(3));
-console.log(tree.depth(3));
-console.log(tree.isBalanced());
+tree.levelOrderForEach();
