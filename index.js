@@ -102,7 +102,6 @@ class Tree {
 
     this.root = remove(this.root, value);
   }
-
   //Traverse the tree in level order
   levelOrderForEach(callback) {
     if (!callback) throw new Error("callback is required");
@@ -117,6 +116,42 @@ class Tree {
         queue.push(node.right);
       }
     }
+  }
+
+  //Traverse the tree in order
+  inOrderForEach(callback) {
+    const inOrder = (node) => {
+      if (node !== null) {
+        inOrder(node.left);
+        callback(node);
+        inOrder(node.right);
+      }
+    };
+    inOrder(this.root);
+  }
+
+  //Traverse the tree in pre order
+  preOrderForEach(callback) {
+    const preOrder = (node) => {
+      if (node !== null) {
+        callback(node);
+        preOrder(node.left);
+        preOrder(node.right);
+      }
+    };
+    preOrder(this.root);
+  }
+
+  //Traverse the tree in post order
+  postOrderForEach(callback) {
+    const postOrder = (node) => {
+      if (node !== null) {
+        postOrder(node.left);
+        postOrder(node.right);
+        callback(node);
+      }
+    };
+    postOrder(this.root);
   }
 
   //Get the height of the tree
@@ -199,4 +234,14 @@ class Tree {
 const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 tree.prettyPrint(tree.root);
 
-tree.levelOrderForEach();
+tree.inOrderForEach((node) => {
+  console.log(node.data);
+});
+
+tree.preOrderForEach((node) => {
+  console.log(node.data);
+});
+
+tree.postOrderForEach((node) => {
+  console.log(node.data);
+});
